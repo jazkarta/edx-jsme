@@ -1,5 +1,5 @@
 """
-Adds input and response types for JSDraw problems.
+Adds input and response types for JSME problems.
 """
 import json
 import re
@@ -9,12 +9,12 @@ from capa.correctmap import CorrectMap
 
 
 @inputtypes.registry.register
-class JSDrawInput(inputtypes.InputTypeBase):
+class JSMEInput(inputtypes.InputTypeBase):
     """
-    A JSDraw input type.
+    A JSME input type.
     """
-    template = 'jsdrawinput.html'
-    tags = ['jsdraw']
+    template = 'jsmeinput.html'
+    tags = ['jsme']
 
     def setup(self):
         if self.value:
@@ -32,7 +32,7 @@ class JSDrawInput(inputtypes.InputTypeBase):
                 stored_state['state'] = self.read_molfile(child.text)
                 dirty = True
             elif child.tag == 'answer':
-                answer = self.read_molfile(child.text)
+                answer = child.text
                 if answer != stored_state.get('answer'):
                     stored_state['answer'] = answer
                     dirty = True
@@ -46,14 +46,13 @@ class JSDrawInput(inputtypes.InputTypeBase):
 
     def read_molfile(self, text):
         lines = filter(None, text.split('\n'))
-        padding = re.search(r"\S", lines[1]).start() - 1
-        return '\n'.join(
-            (lines[0],) + tuple(line[padding:] for line in lines[1:]))
+        padding = re.search(r"\S", lines[0]).start()
+        return '\n'.join((line[padding:] for line in lines))
 
     def _extra_context(self):
         static_url = self.capa_system.STATIC_URL
         return {
-            'html_file': static_url + 'jsdraw_frame.html',
+            'html_file': static_url + 'jsme_frame.html',
             'params': None,
             'gradefn': 'getGrade',
             'get_statefn': 'getState',
@@ -69,13 +68,13 @@ class JSDrawInput(inputtypes.InputTypeBase):
 
 
 @responsetypes.registry.register
-class JSDrawResponse(responsetypes.LoncapaResponse):
+class JSMEResponse(responsetypes.LoncapaResponse):
     """
-    A JSDraw response type.
+    A JSME response type.
     """
-    allowed_inputfields = ['jsdraw']
+    allowed_inputfields = ['jsme']
     required_attributes = []
-    tags = ['jsdrawresponse']
+    tags = ['jsmeresponse']
     max_inputfields = 1
     correct_answer = []
 

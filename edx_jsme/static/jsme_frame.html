@@ -2,45 +2,38 @@
 
 <html>
 <head>
-  <script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.1/dojo/dojo.js" type="text/javascript"></script>
-  <script type="text/javascript" src='vendor/JSDraw3.1.2/Scilligence.JSDraw2.Pro.js'></script>
+  <script type="text/javascript" src="vendor/jsme/jsme/jsme.nocache.js"></script>
   <script src="js/capa/src/jschannel.js"></script>
 </head>
 <body>
 
-<div class="JSDraw" id="jsdraw" skin="w8" 
-     style="width: 660px; height: 300px;border:1px solid gray" />
+<div id="jsme-editor"></div>
 
 <script type="text/javascript">
-    JSDraw.init();
     var editor = null;
     var correct_answer = null;
     var state = null;
 
     function getState() {
       if (editor) return JSON.stringify(
-          { state: editor.getMolfile(), answer: correct_answer });
+          { state: editor.molFile(), answer: correct_answer });
     }
 
     function setState(data) {
       data = JSON.parse(data);
       correct_answer = data.answer;
       state = data.state;
-      if (editor) editor.setMolfile(state);
+      if (editor) editor.readMolFile(state);
     }
 
     function getGrade() {
-      var expected = new JSDraw2.Mol();
-      var response = new JSDraw2.Mol();
-      expected.setMolfile(correct_answer);
-      response.setMolfile(editor.getMolfile());
-      return expected.fullstructureMatch(response) ?
-        'correct': 'incorrect';
+      var answer = editor.smiles();
+      return answer == correct_answer ? 'correct': 'incorrect';
     }
 
-    window.onload = function() {
-      editor = JSDraw.get("jsdraw");
-      if (state) editor.setMolfile(state);
+    function jsmeOnLoad() {
+      editor = new JSApplet.JSME("jsme-editor", "660px", "300px");
+      if (state) editor.readMolFile(state);
     }
 
     /* Establish a channel only if this application is embedded in an iframe.

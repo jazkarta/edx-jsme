@@ -1,5 +1,5 @@
 """
-Tests for JSDraw problem type.
+Tests for JSME problem type.
 """
 import json
 import mock
@@ -7,12 +7,12 @@ import unittest
 
 from lxml import etree
 
-from . import JSDrawInput, JSDrawResponse
+from . import JSMEInput, JSMEResponse
 
 
-class JSDrawInputTests(unittest.TestCase):
+class JSMEInputTests(unittest.TestCase):
     """
-    Test JSDrawInput
+    Test JSMEInput
     """
     xml = etree.fromstring("""
         <jsdraw id="foo">
@@ -27,7 +27,7 @@ class JSDrawInputTests(unittest.TestCase):
         Test that molfile data is extracted properly from XML.
         """
         system = mock.Mock()
-        obj = JSDrawInput(system, self.xml, {})
+        obj = JSMEInput(system, self.xml, {})
         obj.setup()
         value = json.loads(obj.value)
         self.assertEqual(value['answer'], '')
@@ -40,7 +40,7 @@ class JSDrawInputTests(unittest.TestCase):
         """
         system = mock.Mock()
         xml = etree.fromstring('<jsdraw id="foo"> </jsdraw>')
-        obj = JSDrawInput(system, xml, {})
+        obj = JSMEInput(system, xml, {})
         obj.setup()
         self.assertEqual(obj.value, '')
 
@@ -49,7 +49,7 @@ class JSDrawInputTests(unittest.TestCase):
         Test that _extra_context is properly populated.
         """
         system = mock.Mock(STATIC_URL='/static/')
-        obj = JSDrawInput(system, self.xml, {})
+        obj = JSMEInput(system, self.xml, {})
         obj.setup()
         self.assertEqual(obj._extra_context(), {
             'set_statefn': 'setMolfile',
@@ -66,9 +66,9 @@ class JSDrawInputTests(unittest.TestCase):
             'sop': None})
 
 
-class JSDrawResponseTests(unittest.TestCase):
+class JSMEResponseTests(unittest.TestCase):
     """
-    Test JSDrawResponse
+    Test JSMEResponse
     """
     xml = etree.fromstring("""
         <jsdrawresponse>
@@ -83,8 +83,8 @@ class JSDrawResponseTests(unittest.TestCase):
         Test method `setup_response`.
         """
         system = mock.Mock()
-        input_fields = [JSDrawInputTests.xml]
-        obj = JSDrawResponse(self.xml, input_fields, {}, system)
+        input_fields = [JSMEInputTests.xml]
+        obj = JSMEResponse(self.xml, input_fields, {}, system)
         obj.setup_response()
         self.assertEqual(obj.correct_answer, ['One', 'Two'])
 
@@ -93,8 +93,8 @@ class JSDrawResponseTests(unittest.TestCase):
         Test method `check_string`.
         """
         system = mock.Mock()
-        input_fields = [JSDrawInputTests.xml]
-        obj = JSDrawResponse(self.xml, input_fields, {}, system)
+        input_fields = [JSMEInputTests.xml]
+        obj = JSMEResponse(self.xml, input_fields, {}, system)
         self.assertTrue(obj.check_string(['One', 'Two'], '{"answer": "One"}'))
         self.assertFalse(
             obj.check_string(['One', 'Two'], '{"answer": "Three"}'))
