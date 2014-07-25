@@ -80,14 +80,10 @@ class JSMEResponse(responsetypes.LoncapaResponse):
 
     def get_answers(self):
         elements = self.xml.xpath("./answer")
-        if elements:
-            answer = elements[0].text.strip()
-        else:
-            answer = ''
+        answer = elements[0].text.strip()
         return {self.answer_id: answer}
 
     def get_score(self, student_answers):
         graded_answer = json.loads(
             student_answers[self.answer_id].strip())['answer']
         return CorrectMap(self.answer_id, graded_answer)
-
