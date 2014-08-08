@@ -15,9 +15,16 @@ data: |
       </p>
       <jsmeresponse>
         <jsme>
-            <!-- You can set initial state of the editor by including a molfile
-                 inside of the jsme tag. Take care that indentation is preserved.
-                 The molfile format is sensitive to whitespace. -->
+            <!-- 
+               You can set initial state of the editor by including a molfile
+               inside of the jsme tag. 
+               
+               Take care that indentation is preserved.  The molfile format is
+               sensitive to whitespace, so the best policy is to cut and paste
+               as-is on a new line without adjusting the indentation.  If you
+               do indent the molfile data, make sure every line is indented the
+               same amount using space characters only, no tabs.
+            -->
             <initial-state>
                 CN2Cc1[nH]cnc1N(C)C2=O
                 JME 2014-06-28 Wed Jul 23 13:41:18 GMT-400 2014
