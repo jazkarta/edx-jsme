@@ -39,7 +39,7 @@ class JSMEInputTests(unittest.TestCase):
 
     def test_setup_noanswer(self):
         """
-        Test that molfile data is extracted properly from XML.
+        Test failure to provide an answer in XML.
         """
         system = mock.Mock()
         xml = etree.fromstring('<jsme id="foo"></jsme>')
