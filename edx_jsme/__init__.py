@@ -6,6 +6,7 @@ import re
 
 from capa import inputtypes, responsetypes
 from capa.correctmap import CorrectMap
+from django.utils.translation import ugettext as _
 
 
 @inputtypes.registry.register
@@ -38,7 +39,7 @@ class JSMEInput(inputtypes.InputTypeBase):
                     dirty = True
 
         if not answer:
-            raise ValueError("Must provide an answer.")
+            raise ValueError(_("Must provide an answer."))
 
         if dirty:
             self.value = json.dumps(
@@ -80,8 +81,9 @@ class JSMEResponse(responsetypes.LoncapaResponse):
 
     def get_answers(self):
         elements = self.xml.xpath("./answer")
-        answer = elements[0].text.strip()
-        return {self.answer_id: answer}
+        if elements:
+            answer = elements[0].text.strip()
+            return {self.answer_id: answer}
 
     def get_score(self, student_answers):
         graded_answer = json.loads(
