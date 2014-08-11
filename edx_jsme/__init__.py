@@ -81,9 +81,11 @@ class JSMEResponse(responsetypes.LoncapaResponse):
 
     def get_answers(self):
         elements = self.xml.xpath("./answer")
-        if elements:
+        if elements and elements[0].text:
             answer = elements[0].text.strip()
-            return {self.answer_id: answer}
+        else:
+            answer = ''
+        return {self.answer_id: answer}
 
     def get_score(self, student_answers):
         graded_answer = json.loads(
