@@ -2,7 +2,7 @@
 edX JSME
 ========
 
-`edx-jsme` is an add on component for the `edX platform
+`edx-jsme` is an XBlock (add on component) for the `edX platform
 <https://github.com/edx/edx-platform>`_ which provides a new problem type:
 'Molecular Structure'.  This problem type integrates the `JSME molecule editor
 <http://peter-ertl.com/jsme/>`_ seamlessly into an edX course.
