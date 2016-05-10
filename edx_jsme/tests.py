@@ -1,13 +1,25 @@
 """
 Tests for JSME problem type.
 """
+import os
 import json
 import mock
+from mock import Mock
 import unittest
 
+import yaml
 from lxml import etree
 
 from . import JSMEInput, JSMEResponse
+
+
+def mock_capa_module():
+    """
+    capa response types needs just two things from the capa_module: location and track_function.
+    """
+    capa_module = Mock()
+    capa_module.location.to_deprecated_string.return_value = 'i4x://Foo/bar/mock/abc'
+    return capa_module
 
 
 class JSMEInputTests(unittest.TestCase):
@@ -103,13 +115,31 @@ class JSMEResponseTests(unittest.TestCase):
         """
         system = mock.Mock()
         input_fields = [JSMEInputTests.xml]
-        obj = JSMEResponse(self.xml, input_fields, {}, system)
+        obj = JSMEResponse(self.xml, input_fields, {}, system, mock_capa_module())
         self.assertEqual(obj.get_answers(), {'foo': 'One'})
 
     def test_get_score(self):
         system = mock.Mock()
         input_fields = [JSMEInputTests.xml]
-        obj = JSMEResponse(self.xml, input_fields, {}, system)
+        obj = JSMEResponse(self.xml, input_fields, {}, system, mock_capa_module())
         student_answers = {'foo': json.dumps({'answer': 'bar'})}
         score = obj.get_score(student_answers)
         self.assertEqual(score['foo']['correctness'], 'bar')
+
+
+class JSMEOLXFormatTests(unittest.TestCase):
+    """
+    Test JSME OLX format
+    """
+    def test_question_olx_format(self):
+        """
+        Test that in olx question data is inside <question></question> tags.
+        """
+        base_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates', 'problem')
+        with open('{}/jsme.yaml'.format(base_path)) as jsme_yaml:
+            template = jsme_yaml.read()
+        template = yaml.safe_load(template)
+
+        root = etree.fromstring(template.get('data'))
+        childs = [child.tag for child in root.getchildren()]
+        self.assertEqual(set(childs), set(['question']))
