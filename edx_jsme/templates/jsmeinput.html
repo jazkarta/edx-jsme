@@ -41,7 +41,7 @@
     <br/>
     <p id="answer_${id}" class="answer"></p>
 
-    <p class="status">
+    <p class="status"><span class="sr">
       % if status == 'unsubmitted':
       unanswered
       % elif status == 'correct':
@@ -51,7 +51,7 @@
       % elif status == 'incomplete':
       incomplete
       % endif
-    </p>
+    </span></p>
     <br/> <br/>
 
     <div class="error_message" style="padding: 5px 5px 5px 5px; background-color:#FA6666; height:60px;width:400px; display: none"></div>
