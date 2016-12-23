@@ -41,17 +41,12 @@
     <br/>
     <p id="answer_${id}" class="answer"></p>
 
-    <p class="status"><span class="sr">
-      % if status == 'unsubmitted':
-      unanswered
-      % elif status == 'correct':
-      correct
-      % elif status == 'incorrect':
-      incorrect
-      % elif status == 'incomplete':
-      incomplete
-      % endif
-    </span></p>
+    <div class="indicator-container">
+        <span class="status ${status.classname}" data-tooltip="${status.display_tooltip}">
+            <span class="sr">${status.display_name}</span>
+            <span class="status-icon" aria-hidden="true"></span>
+        </span>
+    </div>
     <br/> <br/>
 
     <div class="error_message" style="padding: 5px 5px 5px 5px; background-color:#FA6666; height:60px;width:400px; display: none"></div>
