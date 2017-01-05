@@ -4,6 +4,7 @@ metadata:
     markdown: !!null
 data: |
     <problem>
+      <question>
       <p>
         A molecular structure problem lets the user use the JSME editor
         component to draw a new molecule or update an existing drawing and then
@@ -76,4 +77,5 @@ data: |
           </p>
         </div>
       </solution>
+      </question>
     </problem>
