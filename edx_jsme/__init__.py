@@ -4,8 +4,8 @@ Adds input and response types for JSME problems.
 import json
 import re
 
-from capa import inputtypes, responsetypes
-from capa.correctmap import CorrectMap
+from xmodule.capa import inputtypes, responsetypes
+from xmodule.capa.correctmap import CorrectMap
 from django.utils.translation import ugettext as _
 
 
